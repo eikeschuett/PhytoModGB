@@ -130,6 +130,10 @@ for (i in 2:length(t)){
 }
 
   
-  
-  
+# Save results as nc file
+source("./functions/save_chl_as_nc.R")
+
+# produce a map of final model results and OCCCI data
+source("./functions/rastervis_plot_chl.R")
+
   
