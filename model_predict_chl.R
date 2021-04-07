@@ -44,11 +44,11 @@ source("./functions/primprod.R")
 source("./functions/nutrilim.R")
 
 # Import OCCCI data
-fname = "../data/CCI_ALL-v5.0-MONTHLY_1997-2020.nc"
+fname = "./data/CCI_ALL-v5.0-MONTHLY_1997-2020.nc"
 GB = read_nc_file(fname)
 
 # Import Bathymetry data and repair all suspicious values
-fname = "../data/esacci_depth.nc"
+fname = "./data/esacci_depth.nc"
 depth = read_nc_file(fname)
 depth = depth$DEPTH
 
@@ -136,4 +136,20 @@ source("./functions/save_chl_as_nc.R")
 # produce a map of final model results and OCCCI data
 source("./functions/rastervis_plot_chl.R")
 
-  
+################################################################################
+#
+# Plotting results
+#
+################################################################################ 
+
+# image2D(x = GB$lon, y = GB$lat, z = c_model[,,1],
+#         ylim = range(GB$lat),
+#         xlim = range(GB$lon),
+#         zlim = c(0.1, 55),
+#         log = "z",
+#         main = "First Scene",
+#         #  clab = "[mg/m³]",
+#         axes = F,
+#         ylab = "",
+#         xlab = "",
+#         col = cmocean('balance')(100))
