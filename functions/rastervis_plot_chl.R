@@ -23,10 +23,10 @@ names(data) = c("Model Result", "OCCCI Data")
 
 # Read shapefiles with basemap elements
 # Data is available at https://www.naturalearthdata.com
-rivers = rgdal::readOGR("../Data/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp")
-land =  rgdal::readOGR("../Data/ne_10m_land/ne_10m_land.shp")
-islands = rgdal::readOGR("../Data/ne_10m_minor_islands/ne_10m_minor_islands.shp")
-lakes = rgdal::readOGR("../Data/ne_10m_lakes/ne_10m_lakes.shp")
+rivers = rgdal::readOGR("./data/ne_10m_rivers_lake_centerlines/ne_10m_rivers_lake_centerlines.shp")
+land =  rgdal::readOGR("./data/ne_10m_land/ne_10m_land.shp")
+islands = rgdal::readOGR("./data/ne_10m_minor_islands/ne_10m_minor_islands.shp")
+lakes = rgdal::readOGR("./data/ne_10m_lakes/ne_10m_lakes.shp")
 
 
 # define colourbar
@@ -44,8 +44,8 @@ p = rasterVis::levelplot(data,
                          par.settings = myTheme, # set my colorbar 
                          margin = FALSE, # don't plot strange histograms/medians along the axes
                          contour=FALSE, # don't show contour lines
-                         ylab = "Latitude [° N]",
-                         xlab = "Longitude [° E]",
+                         ylab = "Latitude [? N]",
+                         xlab = "Longitude [? E]",
                          scales=list(draw=TRUE)) # determine if x and y ticks and labels should be shown
 
 # Add shapefiles to plot
