@@ -1,4 +1,3 @@
-
 #
 # To be done:
 # - Export results as nc file and plot it with rasteVis package
@@ -67,11 +66,11 @@ i_time0 = which(GB$time == start_date)
 i_time1 = which(GB$time == end_date)
 
 # Get length of model run (number of days)
-jul_start = julian(as.Date(start_date), origin=as.Date("2002-01-01"))%%365
+jul_start = julian(as.Date(start_date), origin = as.Date("2002-01-01"))%%365
 period = GB$jd[i_time1] - jul_start #GB$jd[i_time0]
 
 # all time steps
-t = seq(from = 0, to = period, by=dt)
+t = seq(from = 0, to = period, by = dt)
 
 
 ################################################################################
@@ -114,9 +113,9 @@ for (i in 2:length(t)){
   i_490 = which.min(abs(date_i-GB$time))
   
   # calculate mean phot production at time t[i]
-  phot = func_PPmean(I_0=I_0, 
-                     atten=GB$kd_490[,,i_490], # choose closest kd/atten in time
-                     depth=GB$bathy, 
+  phot = func_PPmean(I_0 = I_0, 
+                     atten = GB$kd_490[,,i_490], # choose closest kd/atten in time
+                     depth = GB$bathy, 
                      params = params)
   
   # calculate primary production rate, considering nutrient limitations
@@ -136,3 +135,29 @@ source("./functions/save_chl_as_nc.R")
 # produce a map of final model results and OCCCI data
 source("./functions/rastervis_plot_chl.R")
 
+################################################################################
+#
+# Difference plot
+#
+################################################################################
+
+# Not ready yet, just overview
+
+z_array <- chl[,,length(t)]
+
+differences <- (z_array-GB$chl[,,i_time1])/GB$chl[,,i_time1]*100
+
+z_array <- differences
+
+### Difference Plot
+image2D(x = GB$lon, y = GB$lat, z = differences,
+        ylim = range(GB$lat),
+        xlim = range(GB$lon),
+        zlim = c(-100, 100),
+        cex = 4,
+        main = paste0("Diff Sim - Actual ", GB$time[i_time1], " [%]"),
+        xlab = "Longitude [Degree East]",
+        ylab = "Latitude [Degree North]",
+        frame.plot = T,
+        pch = ".",
+        col = cmocean('balance')(100))

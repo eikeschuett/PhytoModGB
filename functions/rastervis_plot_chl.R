@@ -9,7 +9,7 @@ require(ncdf4)
 
 
 # Import data from NC file as raster layer
-filename= paste0("./Results/Chl_model_result_", GB$time[i_time1], ".nc")
+filename = paste0("./Results/Chl_model_result_", GB$time[i_time1], ".nc")
 
 chl_mod = raster(filename, varname = "model_chl")
 
@@ -30,26 +30,26 @@ lakes = rgdal::readOGR("./data/ne_10m_lakes/ne_10m_lakes.shp")
 
 
 # define colourbar
-myTheme <- rasterTheme(region=cmocean('haline')(100))
+myTheme <- rasterTheme(region = cmocean('haline')(100))
 
 
 png(paste0("./Figures/Chl_mod_", GB$time[i_time0], "-", GB$time[i_time1], ".png"),
-           height= 1000, width = 1000, unit="px", res=150)
+           height = 1000, width = 1000, unit = "px", res = 150)
 
 p = rasterVis::levelplot(data, 
-                         zscaleLog=FALSE, # log scale of data
-                         at=seq(0, 20, by=1), # define range of colorbar
+                         zscaleLog = FALSE, # log scale of data
+                         at = seq(0, 20, by = 1), # define range of colorbar
                          # main = "German Bight Bathymetry", # title
                          colorkey = list(title = "Chl [mg m-3]\n"),# label on colorbar
                          par.settings = myTheme, # set my colorbar 
                          margin = FALSE, # don't plot strange histograms/medians along the axes
-                         contour=FALSE, # don't show contour lines
-                         ylab = "Latitude [? N]",
-                         xlab = "Longitude [? E]",
-                         scales=list(draw=TRUE)) # determine if x and y ticks and labels should be shown
+                         contour = FALSE, # don't show contour lines
+                         ylab = "Latitude [° N]",
+                         xlab = "Longitude [° E]",
+                         scales = list(draw = TRUE)) # determine if x and y ticks and labels should be shown
 
 # Add shapefiles to plot
-p = p + layer(sp.polygons(land, fill='darkgray'))# +
+p = p + layer(sp.polygons(land, fill = 'darkgray'))# +
   # layer(sp.polygons(islands, fill='darkgray')) + 
   # layer(sp.polygons(lakes, fill='white')) + 
   # layer(sp.lines(rivers, lwd=1, col='blue'))+

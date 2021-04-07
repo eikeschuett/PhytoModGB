@@ -1,5 +1,4 @@
 
-
 require(ncdf4)
 
 # From here:
@@ -7,7 +6,7 @@ require(ncdf4)
 # in the first example a time dimension is also included
 
 # specify filename
-filename= paste0("./Results/Chl_model_result_", GB$time[i_time1], ".nc")
+filename = paste0("./Results/Chl_model_result_", GB$time[i_time1], ".nc")
 
 # get dimensions of lat and lon
 nlat = length(GB$lat)
@@ -33,6 +32,11 @@ var_cci_chl <- ncvar_def("occci_chl", # name of variable
                        longname = paste("Chlorophyll a concentration of OCCCI for", GB$time[i_time0]),
                        mv) # missing value
 
+# var_diff <- ncvar_def("difference", # name of variable
+#                       "percent", # unit
+#                       list(lon1, lat2), # dimensions
+#                       longname = paste("Difference in Chlorophyll a concentration between model and OCCCI", GB$time[i_time0]),
+#                       mv) # missing value
 # Create NC file
 ncnew <- nc_create(filename, list(var_mod_chl, var_cci_chl))
 
