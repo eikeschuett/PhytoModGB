@@ -35,7 +35,7 @@ dt = 1/24 # length of time steps (hourly)
 require(cmocean)
 
 # Set working directory to Git-folder
-setwd("H:/Eigene Dateien/Studium/9. Semester/Ecosystem_Modeling/Project/PhytoModGB/")
+#setwd("H:/Eigene Dateien/Studium/9. Semester/Ecosystem_Modeling/Project/PhytoModGB/")
 
 # source all relevant functions
 source("./functions/read_nc_file.R")
@@ -136,20 +136,3 @@ source("./functions/save_chl_as_nc.R")
 # produce a map of final model results and OCCCI data
 source("./functions/rastervis_plot_chl.R")
 
-################################################################################
-#
-# Plotting results
-#
-################################################################################ 
-
-# image2D(x = GB$lon, y = GB$lat, z = c_model[,,1],
-#         ylim = range(GB$lat),
-#         xlim = range(GB$lon),
-#         zlim = c(0.1, 55),
-#         log = "z",
-#         main = "First Scene",
-#         #  clab = "[mg/m³]",
-#         axes = F,
-#         ylab = "",
-#         xlab = "",
-#         col = cmocean('balance')(100))
