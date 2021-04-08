@@ -7,7 +7,7 @@
 - [ ] net primary production berechnen und spatially integrated net primary production berechnen
 
 ## Update 2021-04-08
-Wir haben an den Parametern weiter rumgeschraubt. Das hat sich allerdings etwas schwierig gestaltet. Entweder die Vorhersage ist im Küstenbereich recht gut und dafür offshore schlecht oder anders herum. Müssten wir uns vielleicht noch mal zusammen einigen. Wir haben uns auf das Jahr 2018 geeinigt. Da gab es gute Ergebnisse und es ist im Vergleich recht aktuell. 
+Wir haben an den Parametern weiter rumgeschraubt. Das hat sich allerdings etwas schwierig gestaltet. Entweder die Vorhersage ist im Küstenbereich recht gut und dafür offshore schlecht oder anders herum. Müssten wir uns vielleicht noch mal zusammen einigen. Wir haben uns auf das Jahr 2018 ausgesucht. Da gab es gute Ergebnisse und es ist im Vergleich recht aktuell. 
 Ansonsten haben wir noch mit der Modellierung angefangen. Die Skripte sind noch recht unaufgeräumt und manches funktioniert noch nicht ganz aber wir sind weiter dran :)
 
 ## Update 2021-03-30
