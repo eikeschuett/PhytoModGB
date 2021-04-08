@@ -1,9 +1,3 @@
-#
-# To be done:
-# - Export results as nc file and plot it with rasteVis package
-# - optimize parameter settings
-#
-
 
 ################################################################################
 #
@@ -84,7 +78,7 @@ n_lim = nutrilim(params, GB$bathy)
 
 ################################################################################
 #
-# Loop to predict Chl at each time step
+# Prepare Loop to predict Chl at each time step
 #
 ################################################################################
 
@@ -95,6 +89,16 @@ chl = array(numeric(),c(dim(GB$chl)[1],
 
 # Store the OCCCI data for t0 as initial setting
 chl[,,1] = GB$chl[,,i_time0]
+
+# Adding C:C ratio
+C2Chl_ratio <- 25 #mass ratio g/g
+
+# Creating empty arrays to store PP data
+net_PPcarbon <- array(0, c(dim(GB$chl)[1],
+                           dim(GB$chl)[2]))
+gross_PPcarbon <- array(0, c(dim(GB$chl)[1],
+                             dim(GB$chl)[2]))
+
 
 for (i in 2:length(t)){
   
@@ -113,13 +117,17 @@ for (i in 2:length(t)){
   i_490 = which.min(abs(date_i-GB$time))
   
   # calculate mean phot production at time t[i]
-  phot = func_PPmean(I_0 = I_0, 
+  pp_mean = func_PPmean(I_0 = I_0, 
                      atten = GB$kd_490[,,i_490], # choose closest kd/atten in time
                      depth = GB$bathy, 
                      params = params)
   
   # calculate primary production rate, considering nutrient limitations
-  pp = n_lim * phot
+  pp_mean = n_lim * pp_mean
+  
+  # Adding carbon based Primary Production to array
+  net_PPcarbon <-  net_PPcarbon + (pp_mean - params$mort) * chl[,,i]* C2Chl_ratio * dt / period
+  gross_PPcarbon <-  gross_PPcarbon + pp_mean * chl[,,i]* C2Chl_ratio * dt / period
   
   # net growth rate
   dchl_dt = (pp-params$mort) * chl[,,i-1]
@@ -130,10 +138,10 @@ for (i in 2:length(t)){
 
   
 # Save results as nc file
-source("./functions/save_chl_as_nc.R")
+source("./functions/save_pp_as_nc.R")
 
-# produce a map of final model results and OCCCI data
-source("./functions/rastervis_plot_chl.R")
+# # produce a map of final model results and OCCCI data
+# source("./functions/rastervis_plot_chl.R")
 
 
 ################################################################################
@@ -143,24 +151,24 @@ source("./functions/rastervis_plot_chl.R")
 ################################################################################
 
 # Not ready yet, just overview
-require(ncdf4)
-require(plot3D)
+# require(ncdf4)
+# require(plot3D)
+# 
+# z_array <- chl[,,length(t)]
+# 
+# differences <- (z_array-GB$chl[,,i_time1])/GB$chl[,,i_time1]*100
+# 
+# z_array <- differences
 
-z_array <- chl[,,length(t)]
-
-differences <- (z_array-GB$chl[,,i_time1])/GB$chl[,,i_time1]*100
-
-z_array <- differences
-
-### Difference Plot
-image2D(x = GB$lon, y = GB$lat, z = differences,
-        ylim = range(GB$lat),
-        xlim = range(GB$lon),
-        zlim = c(-100, 100),
-        cex = 4,
-        main = paste0("Diff Sim - Actual ", GB$time[i_time1], " [%]"),
-        xlab = "Longitude [Degree East]",
-        ylab = "Latitude [Degree North]",
-        frame.plot = T,
-        pch = ".",
-        col = cmocean("balance")(100))
+# ### Difference Plot
+# image2D(x = GB$lon, y = GB$lat, z = differences,
+#         ylim = range(GB$lat),
+#         xlim = range(GB$lon),
+#         zlim = c(-100, 100),
+#         cex = 4,
+#         main = paste0("Diff Sim - Actual ", GB$time[i_time1], " [%]"),
+#         xlab = "Longitude [Degree East]",
+#         ylab = "Latitude [Degree North]",
+#         frame.plot = T,
+#         pch = ".",
+#         col = cmocean("balance")(100))
