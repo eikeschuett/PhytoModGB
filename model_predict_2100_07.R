@@ -12,7 +12,7 @@ params = list(pmax = 0.3, # maximum photosynthetic rate [1/day] # should not be 
               H_0 = 1.5, # half saturation depth of nutrients [m]
               K_N = 1, # [mmol m^-3] Nutrient half saturation constant. Typically between 0.5 and 1. A little lower than nutrient conc at shore to simulate no nutrient limitation in coastal waters
               KN_0 = 2.5, # scaling parameter
-              offset = 0)
+              offset = -0.7)
 
 start_date = "2018-04-01"
 end_date = "2018-06-01"
@@ -134,10 +134,70 @@ for (i in 2:length(t)){
   chl[,,i] = chl[,,i-1] + dchl_dt * dt
   
   # Adding carbon based Primary Production to array
+  # net pp - params$m subtracted from ppmean
+  # gross pp - without params$m subtracted
+  # vertical mean pp via Euler Integration made with Markus last day of course
   net_PPcarbon <-  net_PPcarbon + (pp_mean - params$mort) * chl[,,i]* C2Chl_ratio * dt / period
   gross_PPcarbon <-  gross_PPcarbon + pp_mean * chl[,,i]* C2Chl_ratio * dt / period
 }
 
+NPP7 <- net_PPcarbon * GB$bathy
+
+GPP7 <- gross_PPcarbon * GB$bathy
+
+# 
+# # Save results as nc file
+# source("./functions/save_PP_as_nc.R")
+# 
+# # produce a map of final model results
+# source("./functions/rastervis_plot_pp.R")
+
+
+# par(mfrow = c(1,3), mar = c(5.5,2.5,5.5,2.5))
+# 
+# image2D(x = GB$lon, y = GB$lat, z = NPP,
+#         ylim = range(GB$lat),
+#         xlim = range(GB$lon),
+#         zlim = c(-60, 40),
+#         cex = 4,
+#         axes = F,
+#         main = "NPP vert. integrated; No Offset",
+#         xlab = "Longitude [° East]",
+#         ylab = "Latitude [° North]",
+#         clab = "[mgC/m²/d]",
+#         frame.plot = T,
+#         pch = ".",
+#         col = cmocean('balance')(100))
+# 
+# 
+# image2D(x = GB$lon, y = GB$lat, z = NPP24,
+#         ylim = range(GB$lat),
+#         xlim = range(GB$lon),
+#         zlim = c(-60, 40),
+#         cex = 4,
+#         axes = F,
+#         main = "NPP vert. integrated; Offset: -0.24",
+#         xlab = "Longitude [° East]",
+#         ylab = "Latitude [° North]",
+#         clab = "[mgC/m²/d]",
+#         frame.plot = T,
+#         pch = ".",
+#         col = cmocean('balance')(100))
+# 
+# 
+# image2D(x = GB$lon, y = GB$lat, z = NPP7,
+#         ylim = range(GB$lat),
+#         xlim = range(GB$lon),
+#         zlim = c(-60, 40),
+#         cex = 4,
+#         axes = F,
+#         main = "NPP vert. integrated; Offset: -0.7",
+#         xlab = "Longitude [° East]",
+#         ylab = "Latitude [° North]",
+#         clab = "[mgC/m²/d]",
+#         frame.plot = T,
+#         pch = ".",
+#         col = cmocean('balance')(100))
   
 # Save results as nc file
 source("./functions/save_pp_as_nc.R")
