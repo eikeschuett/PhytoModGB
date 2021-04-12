@@ -20,9 +20,9 @@ for (offset in offsets){
   N_h = (params$N_0-offset)*(params$H_0/(params$H_0+h))+offset
 
   print(N_h[70])
-  if (offset==offsets[1]){
-    plot(h, N_h, type='l', col=colors[i],
-         ylim=c(0,15), lwd=2,
+  if (offset == offsets[1]){
+    plot(h, N_h, type='l', col = colors[i],
+         ylim = c(0,15), lwd = 2,
          xlab = "depth [m]", 
          ylab = "")
     # manually set y label to prevent cut off of superscript
@@ -33,15 +33,15 @@ for (offset in offsets){
   else{
     
     
-    lines(h, N_h, lwd=2, col=colors[i])
+    lines(h, N_h, lwd = 2, col = colors[i])
   } 
   i = i+1
 }
 
 legend(x = "topright",
-       title="scenario",
-       title.adj=0.5,
-       legend=c("baseline (5)", "RCP8.5 mean (2.5)", "RCP8.5 extreme (0.9)"),
+       title = "scenario",
+       title.adj = 0.5,
+       legend = c("baseline (5)", "RCP8.5 mean (2.5)", "RCP8.5 extreme (0.9)"),
        col = colors,
        lwd = 2)
 
