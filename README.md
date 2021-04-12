@@ -6,10 +6,10 @@
 - [x] Chl prediction für eine schöne Frühjahrsblüte machen und Parameter optimieren
 - [x] net und gross primary production berechnen 
 - [ ] PP für alle Szenarien schön plotten
-- [ ] Difference Plots zwischen den Szenarien erstellen
+- [x] Difference Plots zwischen den Szenarien erstellen
 - [ ] Ergebnisse inhaltlich überprüfen (ergibt das Sinn?)
 - [ ] nc-Files auf Datenkohärenz überprüfen
-- [ ] spatially integrated net primary production GB berechnen, Bezug globale PP 
+- [x] spatially integrated net primary production GB berechnen, Bezug globale PP 
 - [ ] Result, Discussion, Conclusion schreiben (an Angaben halten)
 - [ ] README vor Abgabe schön machen
 
