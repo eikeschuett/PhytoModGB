@@ -4,17 +4,17 @@
 #
 ################################################################################
 
-params = list(pmax = 0.3, # maximum photosynthetic rate [1/day] 
-              K_I = 15, # half saturation time of phytoplankton growth (light!), 
-              mort = 0.035, # mortality rate. Should change from 0 to 0.05 [d^-1] 
-              N_0 = 20, # Nutrient concentration at shore [mmol m^-3]
-              H_0 = 1.5, # half saturation depth of nutrients [m]
-              K_N = 1, # [mmol m^-3] Nutrient half saturation constant
-              KN_0 = 3, # scaling parameter
-              offset = 5)
+params = list(pmax = 0.4, # maximum photosynthetic rate [1/day] # should not be below 0.3
+              K_I = 15, # half saturation time of phytoplankton growth (light!)
+              mort = 0.01, # mortality rate. Should change from 0 to 0.05 [d^-1]
+              N_0 = 20, # Nutrient concentration at shore. Here for P [mmol m^-3]. Markus: Between 15-30 in Winter. In Summer between 1-5 in coastal zones. Offshore towards 0
+              H_0 = 2, # half saturation depth of nutrients [m]
+              K_N = 1, # [mmol m^-3] Nutrient half saturation constant. Typically between 0.5 and 1. A little lower than nutrient conc at shore to simulate no nutrient limitation in coastal waters
+              KN_0 = 5, # scaling parameter
+              offset = 2)
 
-start_date = "2018-04-01"
-end_date = "2018-06-01"
+start_date = "2018-03-01"
+end_date = "2018-05-01"
 dt = 1/24 # length of time steps (hourly)
 
 
@@ -125,9 +125,9 @@ for (i in 2:length(t)){
   i_490 = which.min(abs(date_i-GB$time))
   
   # calculate mean pp production at time t[i]
-  pp_mean = func_PPmean(I_0=I_0, 
-                        atten=GB$kd_490[,,i_490], # choose closest kd/atten in time
-                        depth=GB$bathy, 
+  pp_mean = func_PPmean(I_0 = I_0, 
+                        atten = GB$kd_490[,,i_490], # choose closest kd/atten in time
+                        depth = GB$bathy, 
                         params = params)
   
   # calculate primary production rate, considering nutrient limitations
@@ -158,15 +158,13 @@ for (i in 2:length(t)){
   # multiplying with net growth rate
 }
 
-NPP <- net_PPcarbon*GB$bathy
-GPP <- gross_PPcarbon*GB$bathy
+# Save results as nc file
+source("./functions/save_pp_as_nc.R")
 
-# # Save results as nc file
-# source("./functions/save_PP_as_nc.R")
-# 
-# # produce a map of final model results
-# source("./functions/rastervis_plot_pp.R")
+offset2 <- read_nc_file("./Results/P_model_result_offset2.nc")
 
+# NPP <- net_PPcarbon * GB$bathy
+# GPP <- gross_PPcarbon * GB$bathy
 
 #############################################################################
 #
@@ -174,14 +172,14 @@ GPP <- gross_PPcarbon*GB$bathy
 #
 #############################################################################
 
-params24 = list(pmax = 0.3, 
-              K_I = 15, 
-              mort = 0.035, 
-              N_0 = 20, 
-              H_0 = 1.5, 
-              K_N = 1, 
-              KN_0 = 3, 
-              offset = 2.5)
+params24 = list(pmax = 0.4, # maximum photosynthetic rate [1/day] # should not be below 0.3
+              K_I = 15, # half saturation time of phytoplankton growth (light!)
+              mort = 0.01, # mortality rate. Should change from 0 to 0.05 [d^-1]
+              N_0 = 20, # Nutrient concentration at shore. Here for P [mmol m^-3]. Markus: Between 15-30 in Winter. In Summer between 1-5 in coastal zones. Offshore towards 0
+              H_0 = 2, # half saturation depth of nutrients [m]
+              K_N = 1, # [mmol m^-3] Nutrient half saturation constant. Typically between 0.5 and 1. A little lower than nutrient conc at shore to simulate no nutrient limitation in coastal waters
+              KN_0 = 5, # scaling parameter
+              offset = 1.4)
 
 n_lim = nutrilim(params24, GB$bathy)
 
@@ -209,14 +207,14 @@ for (i in 2:length(t)){
   date_i = GB$time[i_time0]+14+t[i] 
   i_490 = which.min(abs(date_i-GB$time))
 
-  pp_mean24 = func_PPmean(I_0=I_0,
-                        atten=GB$kd_490[,,i_490],
-                        depth=GB$bathy,
+  pp_mean24 = func_PPmean(I_0 = I_0,
+                        atten = GB$kd_490[,,i_490],
+                        depth = GB$bathy,
                         params = params24)
 
   pp_mean24 = n_lim * pp_mean24
 
-  dchl_dt = (pp_mean24-params24$mort) * chl24[,,i-1]
+  dchl_dt = (pp_mean24 - params24$mort) * chl24[,,i-1]
 
   chl24[,,i] = chl24[,,i-1] + dchl_dt * dt
 
@@ -225,19 +223,24 @@ for (i in 2:length(t)){
   gross_PPcarbon24 <- gross_PPcarbon24 + pp_mean24 * chl24[,,i] * C2Chlorophyll_ratio*dt/period
 }
 
+# Save results as nc file
+source("./functions/save_pp_as_nc.R")
+
+offset1.4 <- read_nc_file("./Results/P_model_result_offset1.4.nc")
+
 ##############################################################################
 #
 # Results for -0.7
 #
 ##############################################################################
-params7 = list(pmax = 0.3, 
-                K_I = 15, 
-                mort = 0.035, 
-                N_0 = 20, 
-                H_0 = 1.5, 
-                K_N = 1, 
-                KN_0 = 3, 
-                offset = 0.9)
+params7 = list(pmax = 0.4, # maximum photosynthetic rate [1/day] # should not be below 0.3
+              K_I = 15, # half saturation time of phytoplankton growth (light!)
+              mort = 0.01, # mortality rate. Should change from 0 to 0.05 [d^-1]
+              N_0 = 20, # Nutrient concentration at shore. Here for P [mmol m^-3]. Markus: Between 15-30 in Winter. In Summer between 1-5 in coastal zones. Offshore towards 0
+              H_0 = 2, # half saturation depth of nutrients [m]
+              K_N = 1, # [mmol m^-3] Nutrient half saturation constant. Typically between 0.5 and 1. A little lower than nutrient conc at shore to simulate no nutrient limitation in coastal waters
+              KN_0 = 5, # scaling parameter
+              offset = 0.2)
 
 n_lim = nutrilim(params7, GB$bathy)
 
@@ -265,17 +268,28 @@ for (i in 2:length(t)){
   date_i = GB$time[i_time0]+14+t[i] 
   i_490 = which.min(abs(date_i-GB$time))
 
-  pp_mean7 = func_PPmean(I_0=I_0,
-                        atten=GB$kd_490[,,i_490], 
-                        depth=GB$bathy,
+  pp_mean7 = func_PPmean(I_0 = I_0,
+                        atten = GB$kd_490[,,i_490], 
+                        depth = GB$bathy,
                         params = params7)
 
   pp_mean7 = n_lim * pp_mean7
 
-  dchl_dt = (pp_mean7-params7$mort) * chl7[,,i-1]
+  dchl_dt = (pp_mean7 - params7$mort) * chl7[,,i-1]
   
   chl7[,,i] = chl7[,,i-1] + dchl_dt * dt
 
   net_PPcarbon7 <- net_PPcarbon7 + (pp_mean7 - params7$mort) * chl7[,,i] * C2Chlorophyll_ratio*dt/period
   gross_PPcarbon7 <- gross_PPcarbon7 + pp_mean7 * chl7[,,i] * C2Chlorophyll_ratio*dt/period
 }
+
+# Save results as nc file
+source("./functions/save_pp_as_nc.R")
+
+offset0.2 <- read_nc_file("./Results/P_model_result_offset0.2.nc")
+
+# produce a map of final NPP model results
+ source("./functions/rastervis_plot_npp.R")
+
+# produce a map of final GPP model results
+source("./functions/rastervis_plot_gpp.R")

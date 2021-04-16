@@ -2,9 +2,9 @@
 require(cmocean)
 
 params = list(N_0 = 20, # Nutrient concentration at shore. Here for P [mmol m^-3]. Markus: Between 15-30 in Winter. In Summer between 1-5 in coastal zones. Offshore towards 0
-              H_0 = 1.5) # half saturation depth of nutrients [m]
+              H_0 = 2) # half saturation depth of nutrients [m]
 
-offsets = c(5,3.6,0.9)
+offsets = c(2,1.4,0.2)
 
 h = seq(1,70)
 
@@ -41,7 +41,7 @@ for (offset in offsets){
 legend(x = "topright",
        title = "scenario",
        title.adj = 0.5,
-       legend = c("baseline (5)", "RCP8.5 mean (2.5)", "RCP8.5 extreme (0.9)"),
+       legend = c("baseline (2)", "RCP8.5 mean (1.4)", "RCP8.5 extreme (0.2)"),
        col = colors,
        lwd = 2)
 

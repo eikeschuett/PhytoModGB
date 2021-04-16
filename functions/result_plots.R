@@ -66,7 +66,7 @@ GPP <- gross_PPcarbon * GB$bathy
 GPP24 <- gross_PPcarbon24 * GB$bathy
 GPP7 <- gross_PPcarbon7 * GB$bathy
 
-png("./Figures/scenarios_GPP.png", 
+  png("./Figures/scenarios_GPP.png", 
     width = 800, height = 500, unit = "px", res=115)
 
 par(mfrow = c(1,3), mar = c(5.5,2.5,5.5,2.5))

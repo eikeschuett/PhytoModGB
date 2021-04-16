@@ -6,7 +6,7 @@ require(ncdf4)
 # in the first example a time dimension is also included
 
 # specify filename
-filename = paste0("./Results/Chl_model_result_", params$offset, ".nc")
+filename = paste0("./Results/P_model_result_offset", params$offset, ".nc")
 
 # get dimensions of lat and lon
 nlat = length(GB$lat)
@@ -20,12 +20,6 @@ lat2 <- ncdim_def("latitude", "degrees_north", GB$lat)
 mv <- -999
 
 # Create a new variable
-var_mod_chl <- ncvar_def("model_chl", # name of variable
-                       "mg m-3", # unit
-                       list(lon1, lat2), # dimensions
-                       longname = paste("Chlorophyll a concentration model results for", GB$time[i_time0]),
-                       mv) # missing value
-
 var_mod_netpp <- ncvar_def("model_netpp", # name of variable
                          "?", # unit
                          list(lon1, lat2), # dimensions
@@ -39,13 +33,13 @@ var_mod_grosspp <- ncvar_def("model_grosspp", # name of variable
                          mv) # missing value
 
 # Create NC file
-ncnew <- nc_create(filename, list(var_mod_chl))
+ncnew <- nc_create(filename, list(var_mod_netpp, var_mod_grosspp))
 
 # Add data to variable
 # this only adds the last slice of the Chl variable. In theory we could save all
 # time steps by adding an additional time dimension. This may be nice, but I
 # don't think it's necessary now
-ncvar_put(ncnew, var_mod_chl, chl[,,dim(chl)[3]])
-
+ncvar_put(ncnew, var_mod_netpp, net_PPcarbon)
+ncvar_put(ncnew, var_mod_grosspp, gross_PPcarbon)
 # Close NC file
 nc_close(ncnew)

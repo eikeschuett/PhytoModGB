@@ -11,17 +11,17 @@
 #
 ################################################################################
 
-params = list(pmax = 0.3, # maximum photosynthetic rate [1/day] # should not be below 0.3
-              K_I = 15, #10, half saturation time of phytoplankton growth (light!)
-              mort = 0.04, # mortality rate. Should change from 0 to 0.05 [d^-1]
+params = list(pmax = 0.4, # maximum photosynthetic rate [1/day] # should not be below 0.3
+              K_I = 15, # half saturation time of phytoplankton growth (light!)
+              mort = 0.01, # mortality rate. Should change from 0 to 0.05 [d^-1]
               N_0 = 20, # Nutrient concentration at shore. Here for P [mmol m^-3]. Markus: Between 15-30 in Winter. In Summer between 1-5 in coastal zones. Offshore towards 0
-              H_0 = 1.5, # half saturation depth of nutrients [m]
+              H_0 = 2, # half saturation depth of nutrients [m]
               K_N = 1, # [mmol m^-3] Nutrient half saturation constant. Typically between 0.5 and 1. A little lower than nutrient conc at shore to simulate no nutrient limitation in coastal waters
-              KN_0 = 2.5, # scaling parameter
-              offset = 0)
+              KN_0 = 5, # scaling parameter
+              offset = 2)
 
-start_date = "2018-04-01"
-end_date = "2018-06-01"
+start_date = "2018-03-01"
+end_date = "2018-05-01"
 dt = 1/24 # length of time steps (hourly)
 
 
@@ -122,7 +122,7 @@ for (i in 2:length(t)){
   pp = n_lim * phot
   
   # net growth rate
-  dchl_dt = (pp-params$mort) * chl[,,i-1]
+  dchl_dt = (pp - params$mort) * chl[,,i-1]
   # calculate the new Chl concentration for each time step and store it in the 
   # array (Euler forward integration)
   chl[,,i] = chl[,,i-1] + dchl_dt * dt
@@ -148,19 +148,23 @@ require(plot3D)
 
 z_array <- chl[,,length(t)]
 
-differences <- (z_array-GB$chl[,,i_time1])/GB$chl[,,i_time1]*100
+differences <- z_array-GB$chl[,,i_time1]
 
-z_array <- differences
 
 ### Difference Plot
+png(paste0("./Figures/DifferenceSimActu_May.png"),
+    height= 1000, width = 1000, unit="px", res=150)
+
 image2D(x = GB$lon, y = GB$lat, z = differences,
         ylim = range(GB$lat),
         xlim = range(GB$lon),
-        zlim = c(-100, 100),
+        zlim = c(-5, 5),
         cex = 4,
-        main = paste0("Diff Sim - Actual ", GB$time[i_time1], " [%]"),
+        main = paste0("Diff Sim - Actual ", GB$time[i_time1]),
         xlab = "Longitude [Degree East]",
         ylab = "Latitude [Degree North]",
         frame.plot = T,
         pch = ".",
         col = cmocean("balance")(100))
+
+dev.off()
