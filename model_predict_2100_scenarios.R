@@ -3,6 +3,8 @@
 # Define model parameters
 #
 ################################################################################
+# params$offset has to be changed to the values below to get different
+# scenarios
 
 params = list(pmax = 0.4, # maximum photosynthetic rate [1/day] # should not be below 0.3
               K_I = 15, # half saturation time of phytoplankton growth (light!)
@@ -163,133 +165,130 @@ source("./functions/save_pp_as_nc.R")
 
 offset2 <- read_nc_file("./Results/P_model_result_offset2.nc")
 
-# NPP <- net_PPcarbon * GB$bathy
-# GPP <- gross_PPcarbon * GB$bathy
-
-#############################################################################
-#
-# Results -0.24
-#
-#############################################################################
-
-params24 = list(pmax = 0.4, # maximum photosynthetic rate [1/day] # should not be below 0.3
-              K_I = 15, # half saturation time of phytoplankton growth (light!)
-              mort = 0.01, # mortality rate. Should change from 0 to 0.05 [d^-1]
-              N_0 = 20, # Nutrient concentration at shore. Here for P [mmol m^-3]. Markus: Between 15-30 in Winter. In Summer between 1-5 in coastal zones. Offshore towards 0
-              H_0 = 2, # half saturation depth of nutrients [m]
-              K_N = 1, # [mmol m^-3] Nutrient half saturation constant. Typically between 0.5 and 1. A little lower than nutrient conc at shore to simulate no nutrient limitation in coastal waters
-              KN_0 = 5, # scaling parameter
-              offset = 1.4)
-
-n_lim = nutrilim(params24, GB$bathy)
-
-chl24 = array(numeric(),c(dim(GB$chl)[1],
-                        dim(GB$chl)[2],
-                        length(t)))
-
-chl24[,,1] = GB$chl[,,i_time0]
-
-net_PPcarbon24 <- array(0, c(dim(GB$chl)[1],
-                           dim(GB$chl)[2]))
-
-gross_PPcarbon24 <- array(0, c(dim(GB$chl)[1],
-                             dim(GB$chl)[2]))
-
-
-for (i in 2:length(t)){
-  ##############################################################################
-  #
-  # Calculate mean primary production of water column at time t
-  #
-  ##############################################################################
-  I_0 = surface_PAR(GB$jd[i_time0]+t[i])
-
-  date_i = GB$time[i_time0]+14+t[i] 
-  i_490 = which.min(abs(date_i-GB$time))
-
-  pp_mean24 = func_PPmean(I_0 = I_0,
-                        atten = GB$kd_490[,,i_490],
-                        depth = GB$bathy,
-                        params = params24)
-
-  pp_mean24 = n_lim * pp_mean24
-
-  dchl_dt = (pp_mean24 - params24$mort) * chl24[,,i-1]
-
-  chl24[,,i] = chl24[,,i-1] + dchl_dt * dt
-
-  net_PPcarbon24 <- net_PPcarbon24 + (pp_mean24 - params24$mort) * chl24[,,i] * C2Chlorophyll_ratio*dt/period
-
-  gross_PPcarbon24 <- gross_PPcarbon24 + pp_mean24 * chl24[,,i] * C2Chlorophyll_ratio*dt/period
-}
-
-# Save results as nc file
-source("./functions/save_pp_as_nc.R")
-
-offset1.4 <- read_nc_file("./Results/P_model_result_offset1.4.nc")
-
-##############################################################################
-#
-# Results for -0.7
-#
-##############################################################################
-params7 = list(pmax = 0.4, # maximum photosynthetic rate [1/day] # should not be below 0.3
-              K_I = 15, # half saturation time of phytoplankton growth (light!)
-              mort = 0.01, # mortality rate. Should change from 0 to 0.05 [d^-1]
-              N_0 = 20, # Nutrient concentration at shore. Here for P [mmol m^-3]. Markus: Between 15-30 in Winter. In Summer between 1-5 in coastal zones. Offshore towards 0
-              H_0 = 2, # half saturation depth of nutrients [m]
-              K_N = 1, # [mmol m^-3] Nutrient half saturation constant. Typically between 0.5 and 1. A little lower than nutrient conc at shore to simulate no nutrient limitation in coastal waters
-              KN_0 = 5, # scaling parameter
-              offset = 0.2)
-
-n_lim = nutrilim(params7, GB$bathy)
-
-chl7 = array(numeric(),c(dim(GB$chl)[1],
-                        dim(GB$chl)[2],
-                        length(t)))
-
-chl7[,,1] = GB$chl[,,i_time0]
-
-net_PPcarbon7 <- array(0, c(dim(GB$chl)[1],
-                           dim(GB$chl)[2]))
-
-gross_PPcarbon7 <- array(0, c(dim(GB$chl)[1],
-                             dim(GB$chl)[2]))
-
-
-for (i in 2:length(t)){
-  ##############################################################################
-  #
-  # Calculate mean primary production of water column at time t
-  #
-  ##############################################################################
-  I_0 = surface_PAR(GB$jd[i_time0]+t[i])
-
-  date_i = GB$time[i_time0]+14+t[i] 
-  i_490 = which.min(abs(date_i-GB$time))
-
-  pp_mean7 = func_PPmean(I_0 = I_0,
-                        atten = GB$kd_490[,,i_490], 
-                        depth = GB$bathy,
-                        params = params7)
-
-  pp_mean7 = n_lim * pp_mean7
-
-  dchl_dt = (pp_mean7 - params7$mort) * chl7[,,i-1]
-  
-  chl7[,,i] = chl7[,,i-1] + dchl_dt * dt
-
-  net_PPcarbon7 <- net_PPcarbon7 + (pp_mean7 - params7$mort) * chl7[,,i] * C2Chlorophyll_ratio*dt/period
-  gross_PPcarbon7 <- gross_PPcarbon7 + pp_mean7 * chl7[,,i] * C2Chlorophyll_ratio*dt/period
-}
-
-# Save results as nc file
-source("./functions/save_pp_as_nc.R")
-
-offset0.2 <- read_nc_file("./Results/P_model_result_offset0.2.nc")
+# #############################################################################
+# #
+# # Results -0.24
+# #
+# #############################################################################
+# 
+# params24 = list(pmax = 0.4, # maximum photosynthetic rate [1/day] # should not be below 0.3
+#               K_I = 15, # half saturation time of phytoplankton growth (light!)
+#               mort = 0.01, # mortality rate. Should change from 0 to 0.05 [d^-1]
+#               N_0 = 20, # Nutrient concentration at shore. Here for P [mmol m^-3]. Markus: Between 15-30 in Winter. In Summer between 1-5 in coastal zones. Offshore towards 0
+#               H_0 = 2, # half saturation depth of nutrients [m]
+#               K_N = 1, # [mmol m^-3] Nutrient half saturation constant. Typically between 0.5 and 1. A little lower than nutrient conc at shore to simulate no nutrient limitation in coastal waters
+#               KN_0 = 5, # scaling parameter
+#               offset = 1.4)
+# 
+# n_lim = nutrilim(params24, GB$bathy)
+# 
+# chl24 = array(numeric(),c(dim(GB$chl)[1],
+#                         dim(GB$chl)[2],
+#                         length(t)))
+# 
+# chl24[,,1] = GB$chl[,,i_time0]
+# 
+# net_PPcarbon24 <- array(0, c(dim(GB$chl)[1],
+#                            dim(GB$chl)[2]))
+# 
+# gross_PPcarbon24 <- array(0, c(dim(GB$chl)[1],
+#                              dim(GB$chl)[2]))
+# 
+# 
+# for (i in 2:length(t)){
+#   ##############################################################################
+#   #
+#   # Calculate mean primary production of water column at time t
+#   #
+#   ##############################################################################
+#   I_0 = surface_PAR(GB$jd[i_time0]+t[i])
+# 
+#   date_i = GB$time[i_time0]+14+t[i] 
+#   i_490 = which.min(abs(date_i-GB$time))
+# 
+#   pp_mean24 = func_PPmean(I_0 = I_0,
+#                         atten = GB$kd_490[,,i_490],
+#                         depth = GB$bathy,
+#                         params = params24)
+# 
+#   pp_mean24 = n_lim * pp_mean24
+# 
+#   dchl_dt = (pp_mean24 - params24$mort) * chl24[,,i-1]
+# 
+#   chl24[,,i] = chl24[,,i-1] + dchl_dt * dt
+# 
+#   net_PPcarbon24 <- net_PPcarbon24 + (pp_mean24 - params24$mort) * chl24[,,i] * C2Chlorophyll_ratio*dt/period
+# 
+#   gross_PPcarbon24 <- gross_PPcarbon24 + pp_mean24 * chl24[,,i] * C2Chlorophyll_ratio*dt/period
+# }
+# 
+# # Save results as nc file
+# source("./functions/save_pp_as_nc.R")
+# 
+# offset1.4 <- read_nc_file("./Results/P_model_result_offset1.4.nc")
+# 
+# ##############################################################################
+# #
+# # Results for -0.7
+# #
+# ##############################################################################
+# params7 = list(pmax = 0.4, # maximum photosynthetic rate [1/day] # should not be below 0.3
+#               K_I = 15, # half saturation time of phytoplankton growth (light!)
+#               mort = 0.01, # mortality rate. Should change from 0 to 0.05 [d^-1]
+#               N_0 = 20, # Nutrient concentration at shore. Here for P [mmol m^-3]. Markus: Between 15-30 in Winter. In Summer between 1-5 in coastal zones. Offshore towards 0
+#               H_0 = 2, # half saturation depth of nutrients [m]
+#               K_N = 1, # [mmol m^-3] Nutrient half saturation constant. Typically between 0.5 and 1. A little lower than nutrient conc at shore to simulate no nutrient limitation in coastal waters
+#               KN_0 = 5, # scaling parameter
+#               offset = 0.2)
+# 
+# n_lim = nutrilim(params7, GB$bathy)
+# 
+# chl7 = array(numeric(),c(dim(GB$chl)[1],
+#                         dim(GB$chl)[2],
+#                         length(t)))
+# 
+# chl7[,,1] = GB$chl[,,i_time0]
+# 
+# net_PPcarbon7 <- array(0, c(dim(GB$chl)[1],
+#                            dim(GB$chl)[2]))
+# 
+# gross_PPcarbon7 <- array(0, c(dim(GB$chl)[1],
+#                              dim(GB$chl)[2]))
+# 
+# 
+# for (i in 2:length(t)){
+#   ##############################################################################
+#   #
+#   # Calculate mean primary production of water column at time t
+#   #
+#   ##############################################################################
+#   I_0 = surface_PAR(GB$jd[i_time0]+t[i])
+# 
+#   date_i = GB$time[i_time0]+14+t[i] 
+#   i_490 = which.min(abs(date_i-GB$time))
+# 
+#   pp_mean7 = func_PPmean(I_0 = I_0,
+#                         atten = GB$kd_490[,,i_490], 
+#                         depth = GB$bathy,
+#                         params = params7)
+# 
+#   pp_mean7 = n_lim * pp_mean7
+# 
+#   dchl_dt = (pp_mean7 - params7$mort) * chl7[,,i-1]
+#   
+#   chl7[,,i] = chl7[,,i-1] + dchl_dt * dt
+# 
+#   net_PPcarbon7 <- net_PPcarbon7 + (pp_mean7 - params7$mort) * chl7[,,i] * C2Chlorophyll_ratio*dt/period
+#   gross_PPcarbon7 <- gross_PPcarbon7 + pp_mean7 * chl7[,,i] * C2Chlorophyll_ratio*dt/period
+# }
+# 
+# # Save results as nc file
+# source("./functions/save_pp_as_nc.R")
+# 
+# offset0.2 <- read_nc_file("./Results/P_model_result_offset0.2.nc")
 
 # produce a map of final NPP model results
- source("./functions/rastervis_plot_npp.R")
+source("./functions/rastervis_plot_npp.R")
 
 # produce a map of final GPP model results
 source("./functions/rastervis_plot_gpp.R")

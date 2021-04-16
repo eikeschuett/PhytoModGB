@@ -28,7 +28,7 @@ lakes = rgdal::readOGR("./data/ne_10m_lakes/ne_10m_lakes.shp")
 
 
 # define colourbar
-myTheme <- rasterTheme(region = cmocean('balance')(100))
+myTheme <- rasterTheme(region = cmocean('haline')(100))
 
 
 png(paste0("./Figures/Mod_Pred_GPP.png"),
