@@ -6,7 +6,7 @@ params = list(N_0 = 20, # Nutrient concentration at shore. Here for P [mmol m^-3
 
 offsets = c(2,1.4,0.2)
 
-h = seq(1,70)
+h = seq(1,70, by=0.1)
 
 # define colorbar as proposed by colorbrewer2.org (colorblind friendly!)
 colors = c("#1b9e77", "#7570b3", "#d95f02") 
@@ -24,12 +24,13 @@ for (offset in offsets){
     plot(h, N_h, type='l', col = colors[i],
          ylim = c(0,15), lwd = 2,
          xlab = "depth [m]", 
-         ylab = "")
+         ylab = "",
+         main = "Nutrient Concentrations Functions for the Scenarios")
     # manually set y label to prevent cut off of superscript
     ylab.text = bquote('nutrient concentration [mmol   ' ~m^-3 ~ ']')
     mtext(ylab.text,side = 2, line = 2.5)
   }
-           #expression(nutrient concentration [mmol m^{-3} ])))}
+          
   else{
     
     
@@ -41,7 +42,7 @@ for (offset in offsets){
 legend(x = "topright",
        title = "scenario",
        title.adj = 0.5,
-       legend = c("baseline (2)", "RCP8.5 mean (1.4)", "RCP8.5 extreme (0.2)"),
+       legend = c("baseline", "mean", "extreme"),
        col = colors,
        lwd = 2)
 

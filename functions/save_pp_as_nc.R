@@ -48,3 +48,46 @@ save_nc_file = function(filename, npp, gpp){
   # Close NC file
   nc_close(ncnew)
 }
+
+
+
+chl_to_nc = function(filename, model_chl, occci_chl){
+  # specify filename
+  #filename = paste0("./Results/P_model_result_offset_", params$offset, ".nc")
+  
+  # get dimensions of lat and lon
+  nlat = length(GB$lat)
+  nlon = length(GB$lon)
+  
+  # assign lat and lon dimensions and data
+  lon1 <- ncdim_def("longitude", "degrees_east", GB$lon)
+  lat2 <- ncdim_def("latitude", "degrees_north", GB$lat)
+  
+  # Specify value for missing data
+  mv <- -999
+  
+  # Create a new variable
+  var_model_chl <- ncvar_def("model_chl", # name of variable
+                             "[mg m-3]", # unit
+                             list(lon1, lat2), # dimensions
+                             longname = "Modelled chlorophyll concentration",
+                             mv) # missing value
+  
+  var_occci_chl <- ncvar_def("occci_chl", # name of variable
+                             "[mg m-3]", # unit
+                             list(lon1, lat2), # dimensions
+                             longname = "Chlorophyll concentrations from OCCCI data",
+                             mv) # missing value
+  
+  # Create NC file
+  ncnew <- nc_create(filename, list(var_model_chl, var_occci_chl))
+  
+  # Add data to variable
+  # this only adds the last slice of the Chl variable. In theory we could save all
+  # time steps by adding an additional time dimension. This may be nice, but I
+  # don't think it's necessary now
+  ncvar_put(ncnew, var_model_chl, model_chl)
+  ncvar_put(ncnew, var_occci_chl, occci_chl)
+  # Close NC file
+  nc_close(ncnew)
+}

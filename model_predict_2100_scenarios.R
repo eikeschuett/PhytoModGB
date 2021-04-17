@@ -3,12 +3,11 @@
 # Define model parameters
 #
 ################################################################################
-# params$offset has to be changed to the values below to get different
-# scenarios
+
 
 params = list(pmax = 0.4, # maximum photosynthetic rate [1/day] # should not be below 0.3
               K_I = 15, # half saturation time of phytoplankton growth (light!)
-              mort = 0.01, # mortality rate. Should change from 0 to 0.05 [d^-1]
+              mort = 0.015, # mortality rate. Should change from 0 to 0.05 [d^-1]
               N_0 = 20, # Nutrient concentration at shore. Here for P [mmol m^-3]. Markus: Between 15-30 in Winter. In Summer between 1-5 in coastal zones. Offshore towards 0
               H_0 = 2, # half saturation depth of nutrients [m]
               K_N = 1, # [mmol m^-3] Nutrient half saturation constant. Typically between 0.5 and 1. A little lower than nutrient conc at shore to simulate no nutrient limitation in coastal waters
@@ -97,19 +96,19 @@ for (k in 1:length(scen_titles)){
   # Assign the respective offset
   params$offset = scen_offsets[k]
   
-  ################################################################################
+  ##############################################################################
   #
   # Calculate nutrient limitation
   #
-  ################################################################################
+  ##############################################################################
   
   n_lim = nutrilim(params, GB$bathy)
   
-  ################################################################################
+  ##############################################################################
   #
   # Prepare loop to predict chl, net PP and gross PP at each time step
   #
-  ################################################################################
+  ##############################################################################
   
   # Create an empty array to store the model results for each time step
   chl = array(numeric(),c(dim(GB$chl)[1],
@@ -125,11 +124,11 @@ for (k in 1:length(scen_titles)){
   
   for (i in 2:length(t)){
     
-    ##############################################################################
+    ############################################################################
     #
     # Calculate mean primary production of water column at time t
     #
-    ##############################################################################
+    ############################################################################
     
     # calculate surface radiance at time t[i]
     I_0 = surface_PAR(GB$jd[i_time0]+t[i])
@@ -167,16 +166,14 @@ for (k in 1:length(scen_titles)){
     # gross PP
     gross_PPcarbon <- gross_PPcarbon + pp_mean * chl[,,i] * C2Chlorophyll_ratio*dt/period
     
-    # rel_Growth_rate <- PPmean - params$mort 
-    # mortality growth rate [1/d] 
-    # then replace ppmean below with rel_growth rate
-    
-    # looking at state variable/ state of model at actual time (chlorophyll concentration at given time)
-    # multiplying with net growth rate
-    
-    # Toal primary production GB
-    
+
   }
+  
+  ##############################################################################
+  #
+  # Save results and integrate spatially
+  #
+  ##############################################################################
   
   # Save net and gross primary production in an nc file
   filename = paste0("./Results/P_model_result_offset_", params$offset, ".nc")
@@ -189,30 +186,63 @@ for (k in 1:length(scen_titles)){
   sp_netPP[k] = sp_integ_netPP(GB, net_PPcarbon)
   
   
+  ##############################################################################
+  #
+  # Plot chlorophyll maps after baseline model run to demonstrate performance of
+  # the model
+  #
+  ##############################################################################
+
+  if (k==1){
+    # save data as nc file
+    filename = "./Results/Chl_pred_comp.nc"
+    chl_to_nc(filename = filename, 
+              model_chl = chl[,,i], 
+              occci_chl = GB$chl[,,i_time1])
+    
+    # Produce and save the plot of ground trouth (OCCCI) and our predictions
+    plot_model_chl(filename = filename, 
+                   main = "Model Prediction March - May 2018")
+    
+    # Difference plot
+    plot_chl_diff(filename = filename,
+                  main = "Model prediction - OCCCI Data May 2018")
+    
+  }
+  
   print(paste("Done with", scen_titles[k]))
   
-
 }
 
 
-# produce a map of final NPP model results
+################################################################################
+#
+# Produce maps and plots of the final output
+#
+################################################################################
 
+
+
+# Net PP
 plot_pp(filenames = filenames, 
              titles = scen_titles, 
              varname = "netpp", 
              main = "Modelled Net Primary Production 2100")
 
+# Gross PP
 plot_pp(filenames = filenames, 
              titles = scen_titles, 
              varname = "grosspp", 
              main = "Modelled Gross Primary Production 2100")
 
-
+# Change of net PP between the 2100 and the baseline scenario
 titles = scen_titles[2:3]
 plot_pp_change(filenames = filenames, 
              titles = titles, 
              varname = "netpp", 
              main = "Change of Net Primary Production from Baseline")
 
-
+# Barplot of the total net PP in the GB
+barplot_netPP_GB(scen_titles = scen_titles, 
+                 sp_netPP = sp_netPP)
 
