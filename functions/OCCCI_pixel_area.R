@@ -30,17 +30,17 @@ for (i in seq(1:dim(GB$chl)[2])){
 }
 
 # Sum of Pixel
-g_pix_sum0 <- sum(rowSums(GPP, dims = 1, na.rm = T))
-g_pix_sum24 <- sum(rowSums(GPP24, dims = 1, na.rm = T))
-g_pix_sum7 <- sum(rowSums(GPP7, dims = 1, na.rm = T))
-
-# List production for each scenario
-# GPP
-TPP <- as.numeric(c((g_pix_sum0*365)/1000, (g_pix_sum24*365)/1000, (g_pix_sum7*365)/1000))
-
-g_pix_sum0 <- sum(rowSums(GPP, dims = 1, na.rm = T))
-g_pix_sum24 <- sum(rowSums(GPP24, dims = 1, na.rm = T))
-g_pix_sum7 <- sum(rowSums(GPP7, dims = 1, na.rm = T))
-
-# List production for each scenario
-TPP <- as.numeric(c((g_pix_sum0*365)/1000, (g_pix_sum24*365)/1000, (g_pix_sum7*365)/1000))
+# g_pix_sum0 <- sum(rowSums(GPP, dims = 1, na.rm = T))
+# g_pix_sum24 <- sum(rowSums(GPP24, dims = 1, na.rm = T))
+# g_pix_sum7 <- sum(rowSums(GPP7, dims = 1, na.rm = T))
+# 
+# # List production for each scenario
+# # GPP
+# TPP <- as.numeric(c((g_pix_sum0*365)/1000, (g_pix_sum24*365)/1000, (g_pix_sum7*365)/1000))
+# 
+# g_pix_sum0 <- sum(rowSums(GPP, dims = 1, na.rm = T))
+# g_pix_sum24 <- sum(rowSums(GPP24, dims = 1, na.rm = T))
+# g_pix_sum7 <- sum(rowSums(GPP7, dims = 1, na.rm = T))
+# 
+# # List production for each scenario
+# TPP <- as.numeric(c((g_pix_sum0*365)/1000, (g_pix_sum24*365)/1000, (g_pix_sum7*365)/1000))

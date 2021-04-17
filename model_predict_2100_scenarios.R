@@ -196,6 +196,7 @@ for (k in 1:length(scen_titles)){
 
 
 # produce a map of final NPP model results
+
 plot_pp(filenames = filenames, 
              titles = scen_titles, 
              varname = "netpp", 
@@ -206,10 +207,12 @@ plot_pp(filenames = filenames,
              varname = "grosspp", 
              main = "Modelled Gross Primary Production 2100")
 
+
 titles = scen_titles[2:3]
 plot_pp_change(filenames = filenames, 
              titles = titles, 
              varname = "netpp", 
              main = "Change of Net Primary Production from Baseline")
+
 
 
