@@ -186,7 +186,7 @@ for (k in 1:length(scen_titles)){
 
 
 # produce a map of final NPP model results
-source("./functions/rastervis_plot_npp.R")
+source("./functions/plot_results.R")
 
 plot_pp(filenames = filenames, 
              titles = scen_titles, 
@@ -197,3 +197,7 @@ plot_pp(filenames = filenames,
              titles = scen_titles, 
              varname = "grosspp", 
              main = "Modelled Gross Primary Production 2100")
+
+# produce difference plots
+
+source("./functions/rastervis_plot_differences.R")

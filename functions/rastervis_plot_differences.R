@@ -6,14 +6,14 @@ require(sp)
 require(ncdf4)
 
 # Import data from NC files as raster layer
-filename1 = "./Results/P_model_result_offset2.nc"
-filename2 = "./Results/P_model_result_offset1.4.nc"
-filename3 = "./Results/P_model_result_offset0.2.nc"
+filename1 = "./Results/P_model_result_offset_2.nc"
+filename2 = "./Results/P_model_result_offset_1.4.nc"
+filename3 = "./Results/P_model_result_offset_0.2.nc"
 
 # save GPP data for each offset as variable
-gpp_mod1 = raster(filename1, varname = "model_grosspp")
-gpp_mod2 = raster(filename2, varname = "model_grosspp")
-gpp_mod3 = raster(filename3, varname = "model_grosspp")
+gpp_mod1 = raster(filename1, varname = "grosspp")
+gpp_mod2 = raster(filename2, varname = "grosspp")
+gpp_mod3 = raster(filename3, varname = "grosspp")
 
 diff1 = gpp_mod1 - gpp_mod2
 diff2 = gpp_mod1 - gpp_mod3
@@ -21,12 +21,12 @@ diff3 = gpp_mod2 - gpp_mod3
 
 data1 = stack(diff1, diff2, diff3)
 
-names(data1) = c("Diff_2-1.4", "Diff_2-0.2", "Diff_1.4-0.2")
+names(data1) = c("Diff_Base-Mean", "Diff_Base-Extreme", "Diff_Mean-Extreme")
 
 # save NPP data for each offset as variable
-netpp_mod1 = raster(filename1, varname = "model_netpp")
-netpp_mod2 = raster(filename2, varname = "model_netpp")
-netpp_mod3 = raster(filename3, varname = "model_netpp")
+netpp_mod1 = raster(filename1, varname = "netpp")
+netpp_mod2 = raster(filename2, varname = "netpp")
+netpp_mod3 = raster(filename3, varname = "netpp")
 
 diffnpp1 = netpp_mod1 - netpp_mod2
 diffnpp2 = netpp_mod1 - netpp_mod3
