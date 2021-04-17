@@ -23,14 +23,14 @@ save_nc_file = function(filename, npp, gpp){
   
   # Create a new variable
   var_mod_netpp <- ncvar_def("netpp", # name of variable
-                           "[mgC m-2 d-1]", # unit
+                           "[gC m-2 d-1]", # unit
                            list(lon1, lat2), # dimensions
                            longname = paste("Net primary production for 2100", 
                                             params$offset),
                            mv) # missing value
   
   var_mod_grosspp <- ncvar_def("grosspp", # name of variable
-                           "[mgC m-2 d-1]", # unit
+                           "[gC m-2 d-1]", # unit
                            list(lon1, lat2), # dimensions
                            longname = paste("Gross primary production for 2100", 
                                             params$offset),

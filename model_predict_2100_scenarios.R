@@ -41,7 +41,7 @@ require(rgdal)
 require(sp)
 
 # Set working directory
-#setwd("H:/Eigene Dateien/Studium/9. Semester/Ecosystem_Modeling/Project/PhytoModGB/)
+setwd("H:/Eigene Dateien/Studium/9. Semester/Ecosystem_Modeling/Project/PhytoModGB/")
 
 # source all relevant functions
 source("./functions/read_nc_file.R")
@@ -49,6 +49,8 @@ source("./functions/surface_PAR.R")
 source("./functions/primprod.R")
 source("./functions/nutrilim.R")
 source("./functions/save_pp_as_nc.R")
+source("./functions/sp_integration_netPP.R")
+source("./functions/plot_results.R")
 
 # Import OCCCI data
 fname = "./data/CCI_ALL-v5.0-MONTHLY_1997-2020.nc"
@@ -80,8 +82,9 @@ period = GB$jd[i_time1] - jul_start #GB$jd[i_time0]
 # all time steps
 t = seq(from = 0, to = period, by=dt)
 
-# prepare an empty list to store all output filenames
-filenames = rep(NA, length(scen_titles))
+# prepare empty list to store all output filenames and results of spatially
+# integrated net primary production
+filenames = sp_netPP = rep(NA, length(scen_titles))
 
 ################################################################################
 #
@@ -170,24 +173,29 @@ for (k in 1:length(scen_titles)){
     
     # looking at state variable/ state of model at actual time (chlorophyll concentration at given time)
     # multiplying with net growth rate
+    
+    # Toal primary production GB
+    
   }
   
   # Save net and gross primary production in an nc file
-  
   filename = paste0("./Results/P_model_result_offset_", params$offset, ".nc")
   filenames[k] = filename
   save_nc_file(filename = filename,
                npp = net_PPcarbon,
                gpp = gross_PPcarbon)
   
+  # Calculate spatially integrated net primary production
+  sp_netPP[k] = sp_integ_netPP(GB, net_PPcarbon)
+  
   
   print(paste("Done with", scen_titles[k]))
+  
+
 }
 
 
 # produce a map of final NPP model results
-source("./functions/rastervis_plot_npp.R")
-
 plot_pp(filenames = filenames, 
              titles = scen_titles, 
              varname = "netpp", 
@@ -197,3 +205,11 @@ plot_pp(filenames = filenames,
              titles = scen_titles, 
              varname = "grosspp", 
              main = "Modelled Gross Primary Production 2100")
+
+titles = scen_titles[2:3]
+plot_pp_change(filenames = filenames, 
+             titles = titles, 
+             varname = "netpp", 
+             main = "Change of Net Primary Production from Baseline")
+
+
