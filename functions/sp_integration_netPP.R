@@ -6,7 +6,7 @@
 
 # Determine lon / lat distance
 # determine km per pixel width
-# m² of pixels
+# m? of pixels
 # add up all pixels
 # multiply with the mean pixel width and divide by the total area
 

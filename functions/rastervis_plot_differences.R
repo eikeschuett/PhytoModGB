@@ -34,7 +34,7 @@ diffnpp3 = netpp_mod2 - netpp_mod3
 
 data2 = stack(diffnpp1, diffnpp2, diffnpp3)
 
-names(data2) = c("Diff_2-1.4", "Diff_2-0.2", "Diff_1.4-0.2")
+names(data2) = c("Diff_Base-Mean", "Diff_Base-Extreme", "Diff_Mean-Extreme")
 
 # Read shapefiles with basemap elements
 # Data is available at https://www.naturalearthdata.com
@@ -53,7 +53,7 @@ png(paste0("./Figures/DifferencePlots_NPP.png"),
 
 p = rasterVis::levelplot(data2, 
                          zscaleLog = FALSE, # log scale of data
-                         at = seq(0, 2, by = 0.05), # define range of colorbar
+                         at = seq(0, 1.5, by = 0.05), # define range of colorbar
                          main = "Absolute Differences Modelled NPP 2100", # title
                          colorkey = list(title = "[mgC/m2/d]"),# label on colorbar
                          par.settings = myTheme, # set my colorbar 
