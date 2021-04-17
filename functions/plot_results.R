@@ -34,7 +34,7 @@ plot_pp = function(filenames, titles, varname, main){
                  cbar_range = cbar_range,
                  myTheme = myTheme,
                  main = main,
-                 colorkey = list(title = expression("gC m"^-2*"d"^-1)))
+                 colorkey = list(title = expression("     [gC m"^-2*"d"^-1*"]")))
 }
 
 
@@ -61,7 +61,7 @@ plot_pp_change = function(filenames, titles, varname, main){
                  cbar_range = cbar_range,
                  myTheme = myTheme,
                  main = main,
-                 colorkey = list(title = expression("gC m"^-2*"d"^-1)))
+                 colorkey = list(title = expression("[gC m"^-2*"d"^-1*"]")))
 }
 
 

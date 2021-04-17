@@ -202,7 +202,7 @@ for (k in 1:length(scen_titles)){
     
     # Produce and save the plot of ground trouth (OCCCI) and our predictions
     plot_model_chl(filename = filename, 
-                   main = "Model Prediction March - May 2018")
+                   main = "Model Prediction May 2018")
     
     # Difference plot
     plot_chl_diff(filename = filename,
