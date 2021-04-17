@@ -47,7 +47,7 @@ source("./functions/read_nc_file.R")
 source("./functions/surface_PAR.R")
 source("./functions/primprod.R")
 source("./functions/nutrilim.R")
-source("./functions/save_pp_as_nc.R")
+source("./functions/save_data_as_nc.R")
 source("./functions/sp_integration_netPP.R")
 source("./functions/plot_results.R")
 
