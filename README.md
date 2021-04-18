@@ -1,5 +1,6 @@
-# PhytoModGB
+# Effects of Climate-driven Variability in Atlantic Nutrient Supply on Primary Production in the German Bight
 
+Climate change is predicted to alter the nutrient content of the North Sea. 
 ## To do
 
 - [x] spatially integrated net primary production GB berechnen, Bezug globale PP 
