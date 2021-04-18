@@ -4,7 +4,8 @@
 
 - [x] spatially integrated net primary production GB berechnen, Bezug globale PP 
 - [x] Difference plots integrieren
-- [ ] model_predict_chl.R mit Plots integrieren
-- [ ] Repo aufräumen (unnötige Functions und Figs raus)
+- [x] model_predict_chl.R mit Plots integrieren
+- [x] Repo aufräumen (unnötige Functions und Figs raus)
+- [ ] Plot N over Depth: N_offset doch mit angeben
 - [ ] Result, Discussion, Conclusion schreiben (an Angaben halten)
 - [ ] README vor Abgabe schön machen
