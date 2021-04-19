@@ -40,9 +40,9 @@ for (offset in offsets){
 }
 
 legend(x = "topright",
-       title = "scenario",
+       title = expression("scenario (N"["Offset"]*")"),
        title.adj = 0.5,
-       legend = c("baseline", "mean", "extreme"),
+       legend = c("baseline (2)", "mean (1.4)", "extreme (0.2)"),
        col = colors,
        lwd = 2)
 
