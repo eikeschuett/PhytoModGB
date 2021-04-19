@@ -1,6 +1,6 @@
 # Effects of Climate-driven Variability in Atlantic Nutrient Supply on Primary Production in the German Bight
 
-Climate change is predicted to alter the nutrient content of the North Sea. Using a simple numerical model approach implemented in R (version 4.0.3), primary production for spring algal blooms in the German Bight was calculated. The model is based on remote sensing data from 2018 and simulates nutrient concentrations under different climate change scenarios (RCP4.5, RCP8.5) as well as a baseline scenario, based on the current status, for the year 2100.
+Climate change is predicted to alter the nutrient content of the North Sea. Using a simple numerical model approach implemented in R (version 4.0.3), primary production for spring algal blooms in the German Bight was calculated. The model is based on remote sensing data from 2018 and simulates nutrient concentrations under climate change scenarios (RCP8.5 mean, RCP8.5 maximum variability) as well as a baseline scenario, based on the current status, for the year 2100.
 
 Contacts:  
 Ariane Tepaß (stu224042@mail.uni-kiel.de) , Eike Schütt (stu200750@mail.uni-kiel.de), and Josephine Eismann (stu223324@mail.uni-kiel.de)
@@ -20,20 +20,21 @@ Calculation, modeling, saving and plotting take place collectively in this scrip
 - maptools
 - rgdal
 - sp
+- ggplot2
 
 ## NetCDF and shapefiles
 Note: The code runs with data already implemented into the repository (see <a href=https://github.com/eikeschuett/PhytoModGB/tree/main/data>data</a>)
 
-The code works netCDF files. Initial values for Chl and attenuation coefficient at a time t were taken from monthly averages of the 5th reprocessing of the Ocean-Colour Climate Change Initiative (OC-CCI, <a href=https://www.oceancolour.org/thredds/ncss/grid/CCI_ALL-v5.0-MONTHLY/dataset.html>Link to data source</a>).
+The code works with netCDF files. Initial values for Chl and attenuation coefficient at a time t were taken from monthly averages of the 5th reprocessing of the Ocean-Colour Climate Change Initiative (OC-CCI, <a href=https://www.oceancolour.org/thredds/ncss/grid/CCI_ALL-v5.0-MONTHLY/dataset.html>Link to data source</a>).
 
 A bathymetry NetCDF-file (ESA CCI data) for the southern North Sea was provided by Kai Wirtz (pers. common).
 
-Shapefile data of our study area is used to plot model results. Data is available at https://www.naturalearthdata.com
+Shapefiles with basic geodata of our study area used when plotting model results are available at https://www.naturalearthdata.com
 
 ## Results
 Outputs are saved in a <a href=https://github.com/eikeschuett/PhytoModGB/tree/main/Results>Results</a> folder. The folder contains 4 NetCDF-files with model results.
 
 ## Report
-The derivation, application, results and interpretation can be read in detail: <a href=https://github.com/eikeschuett/PhytoModGB/tree/main/Report>Report</a>
+The derivation, application, results of the model and the interpretation can be read in detail: <a href=https://github.com/eikeschuett/PhytoModGB/tree/main/Report>Report</a>
 
 
