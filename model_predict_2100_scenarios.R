@@ -40,7 +40,7 @@ require(rgdal)
 require(sp)
 
 # Set working directory
-setwd("H:/Eigene Dateien/Studium/9. Semester/Ecosystem_Modeling/Project/PhytoModGB/")
+# setwd("H:/Eigene Dateien/Studium/9. Semester/Ecosystem_Modeling/Project/PhytoModGB/")
 
 # source all relevant functions
 source("./functions/read_nc_file.R")
@@ -193,7 +193,7 @@ for (k in 1:length(scen_titles)){
   #
   ##############################################################################
 
-  if (k==1){
+  if (k == 1){
     # save data as nc file
     filename = "./Results/Chl_pred_comp.nc"
     chl_to_nc(filename = filename, 
